@@ -1,5 +1,5 @@
 ---
-title: "class_5_3_2020"
+title: "class_5_3_2020: sampling"
 output: html_document
 ---
 
@@ -10,6 +10,7 @@ library(tidyverse)
 library(fs)
 library(googlesheets4)
 library(janitor)
+library(moderndive)
 
 ```
 
@@ -25,5 +26,22 @@ x %>% arrange(desc(red))
 
 ```{r, echo=FALSE}
 x %>% ggplot(aes(red)) + geom_bar()
+```
+
+```{r}
+
+y <- x %>% mutate(perc_red = red / (red +white))
+
+y %>% ggplot(aes(perc_red)) +
+  geom_histogram(bins = 20)
+```
+
+```{r}
+large_sample <- tibble(bogs = 1:10000, color = c(rep("red", 2000), rep("white", 8000)))
+
+
+large_sample %>% 
+  mutate(is_red = (color == "red")) %>% 
+  summarize(num_red = sum(is_red))
 ```
 
