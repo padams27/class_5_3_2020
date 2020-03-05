@@ -1,0 +1,29 @@
+---
+title: "class_5_3_2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(fs)
+library(googlesheets4)
+library(janitor)
+
+```
+
+```{r, include=FALSE}
+
+sheets_deauth()
+x <- read_sheet(ss = "14HmwN2cEVAJHupuehCuLdwG9BXtR3COrxDgaaylLhkA") %>% 
+  clean_names()
+
+x %>% arrange(desc(red))
+
+```
+
+```{r, echo=FALSE}
+x %>% ggplot(aes(red)) + geom_bar()
+```
+
