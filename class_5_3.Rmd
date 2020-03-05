@@ -11,6 +11,7 @@ library(fs)
 library(googlesheets4)
 library(janitor)
 library(moderndive)
+library(gt)
 
 ```
 
@@ -39,9 +40,25 @@ y %>% ggplot(aes(perc_red)) +
 ```{r}
 large_sample <- tibble(bogs = 1:10000, color = c(rep("red", 2000), rep("white", 8000)))
 
+simulate <- function(large_sample) {
+  large_sample %>% 
+  rep_sample_n(size = 25, reps = 51) %>% 
+  summarize(red_sum = sum(color == "red")) %>% 
+  mutate(percent_red = red_sum / 25)
+}
+  
 
-large_sample %>% 
-  mutate(is_red = (color == "red")) %>% 
-  summarize(num_red = sum(is_red))
+sim_results <- tibble(sim_ID = 1:3, 
+                      results = map(simulate()))
+
+
+
+
+ten_times <- tibble(results = map(1:n ~ simulate(n)))
+
+
+ten_times
+
+ggplot(ab, aes(percent_red)) + geom_histogram(bins = 20)
+
 ```
-
